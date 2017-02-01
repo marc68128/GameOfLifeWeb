@@ -1,0 +1,25 @@
+    html, body{
+		height:100%; 
+		width:100%;
+		margin:0;
+		padding:0;
+	}
+	
+	.cell {
+        background-color: blue;
+        position: absolute;
+    }
+	
+	.ConfigDiv{
+		height:50px;
+		padding:10px;
+		border-bottom:2px solid black;
+	}
+	
+	#GridDiv{
+		height: calc(100% - 50px); 
+		width: 100%; 
+		background-color: red; 
+		opacity: 0.3; 
+		position: relative;
+	}
