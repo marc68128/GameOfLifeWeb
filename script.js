@@ -1,17 +1,33 @@
-var timer; 
-
-$("#ColumnNumberInput").val(30);
-$("#RowNumberInput").val(20);
+var timer;
+var mousedown = false;
+var rowCount = 20;
+var columnCount = 30;
+$("#ColumnNumberInput").val(columnCount);
+$("#RowNumberInput").val(rowCount);
 
 var delay = 200;
 
 InitGrid();
 
-$( window ).resize(function() {
-  InitGrid();
+$(window).resize(function () {
+    InitGrid();
 });
 
-$('#Toggle').on('click', function() {
+$(window).mousedown(function () {
+    mousedown = true;
+});
+$(window).mouseup(function () {
+    mousedown = false;
+});
+$('.cell').mouseenter(function () {
+    if (mousedown) {
+        console.log($(this));
+        ToggleGridState($(this));
+    }
+});
+
+
+$('#Toggle').on('click', function () {
     if ($(this).html() == "Start") {
         $(this).html("Stop");
         timer = setInterval(moveNext, delay);
@@ -22,20 +38,11 @@ $('#Toggle').on('click', function() {
 });
 
 $('#GridDiv').on('click', '.cell', function () {
-    if ($(this).attr("data-alive") == 0) {
-        $(this).css("background-color", "black");
-        $(this).attr("data-alive", 1);
-    } else {
-        $(this).css("background-color", "blue");
-        $(this).attr("data-alive", 0);
-    }
-    CheckNext($(this));
-    CheckNextNeighbors($(this));
-    console.log("END");
+    ToggleGridState($(this));
 });
 
 $('#Init').on('click', function () {
-	InitGrid();
+    InitGrid();
 });
 
 var moveNext = function () {
@@ -62,23 +69,23 @@ var moveNext = function () {
     });
 };
 
-function InitGrid(){
-	rowCount = $("#RowNumberInput").val();;
-	columnCount = $("#ColumnNumberInput").val();
-	delay = 200;
-	
-	var div = $("#GridDiv");
-	div.html("");
-	
-	var height = div.height();
-	var width = div.width();
-	
-	var rowHeight = height / rowCount - 2;
-	var columnWidth = width / columnCount - 2;
-	
-	for (var i = 0; i < rowCount; i++) {
-		for (var j = 0; j < columnCount; j++) {
-			div.append("<div class='cell' style='height: "
+function InitGrid() {
+    rowCount = $("#RowNumberInput").val();;
+    columnCount = $("#ColumnNumberInput").val();
+    delay = 200;
+
+    var div = $("#GridDiv");
+    div.html("");
+
+    var height = div.height();
+    var width = div.width();
+
+    var rowHeight = height / rowCount - 2;
+    var columnWidth = width / columnCount - 2;
+
+    for (var i = 0; i < rowCount; i++) {
+        for (var j = 0; j < columnCount; j++) {
+            div.append("<div class='cell' style='height: "
 				+ rowHeight
 				+ "px; width: "
 				+ columnWidth
@@ -91,8 +98,8 @@ function InitGrid(){
 				+ "' data-row='"
 				+ i
 				+ "' data-alive='0' data-changed='0' data-next='2'></div>");
-		}
-	}
+        }
+    }
 }
 
 function CheckNext(cell) {
@@ -126,4 +133,16 @@ function CheckNextNeighbors(cell) {
             CheckNext($("div[data-col='" + j + "'][data-row='" + i + "']"));
         }
     }
+}
+
+function ToggleGridState(grid) {
+    if (grid.attr("data-alive") == 0) {
+        grid.css("background-color", "black");
+        grid.attr("data-alive", 1);
+    } else {
+        grid.css("background-color", "blue");
+        grid.attr("data-alive", 0);
+    }
+    CheckNext(grid);
+    CheckNextNeighbors(grid);
 }
