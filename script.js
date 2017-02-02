@@ -10,7 +10,7 @@ var delay = 200;
 InitGrid();
 
 $(window).resize(function () {
-    InitGrid();
+    ResizeGrid();
 });
 
 $(window).mousedown(function () {
@@ -98,6 +98,26 @@ function InitGrid() {
 				+ "' data-row='"
 				+ i
 				+ "' data-alive='0' data-changed='0' data-next='2'></div>");
+        }
+    }
+}
+
+function ResizeGrid() {
+    var div = $("#GridDiv");
+
+    var height = div.height();
+    var width = div.width();
+
+    var rowHeight = height / rowCount - 2;
+    var columnWidth = width / columnCount - 2;
+
+    for (var i = 0; i < rowCount; i++) {
+        for (var j = 0; j < columnCount; j++) {
+            var cell = $("div[data-col='" + j + "'][data-row='" + i + "']");
+            cell.height(rowHeight);
+            cell.width(columnWidth);
+            cell.css("top", ((i * (rowHeight + 2)) + 1));
+            cell.css("left", ((j * (columnWidth + 2)) + 1));
         }
     }
 }
