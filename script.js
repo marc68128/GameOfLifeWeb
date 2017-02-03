@@ -2,12 +2,11 @@ var timer;
 var mousedown = false;
 var rowCount = 20;
 var columnCount = 30;
+var delay = 200;
 $("#ColumnNumberInput").val(columnCount);
 $("#RowNumberInput").val(rowCount);
-
-var delay = 200;
-
 InitGrid();
+
 
 $(window).resize(function () {
     ResizeGrid();
@@ -16,9 +15,11 @@ $(window).resize(function () {
 $(window).mousedown(function () {
     mousedown = true;
 });
+
 $(window).mouseup(function () {
     mousedown = false;
 });
+
 $('.cell').mouseenter(function () {
     if (mousedown) {
         console.log($(this));
@@ -44,6 +45,7 @@ $('#GridDiv').on('click', '.cell', function () {
 $('#Init').on('click', function () {
     InitGrid();
 });
+
 
 var moveNext = function () {
 
